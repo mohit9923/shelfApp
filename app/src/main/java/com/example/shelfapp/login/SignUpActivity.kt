@@ -88,6 +88,7 @@ class SignUpActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             if(isValidEmail(email)){
+                emailInvalidText.visibility = View.GONE
                 if(isValidPassword(password)) {
                     progressBar.visibility= View.VISIBLE
                     passwordInvalidText.visibility= View.GONE
@@ -127,6 +128,7 @@ class SignUpActivity : AppCompatActivity() {
                             "uppercase letter",Toast.LENGTH_SHORT).show()
                 }
             } else{
+                passwordInvalidText.visibility= View.GONE
                 emailInvalidText.visibility = View.VISIBLE
             }
 

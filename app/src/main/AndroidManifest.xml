@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:name=".application.BookShelfApplication"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -17,7 +18,8 @@
             android:exported="false" />
         <activity
             android:name=".books.BooksActivity"
-            android:exported="false" />
+            android:exported="false" >
+        </activity>
         <activity
             android:name=".login.LoginActivity"
             android:exported="true">

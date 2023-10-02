@@ -1,5 +1,6 @@
 package com.example.shelfapp.login
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.shelfapp.R
 import com.example.shelfapp.books.BooksActivity
+import com.example.shelfapp.books.DBUtils
+import com.example.shelfapp.sharedpreference.ApplicationSharedPreference
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -28,6 +31,15 @@ class LoginActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_screen)
+
+        if(!TextUtils.isEmpty(ApplicationSharedPreference.getInstance()?.getValueOfSharedPrefrences(this,"email"))){
+            if(DBUtils.shouldRefreshCompanyList()){
+                DBUtils.dropCompanies()
+            }else {
+                startActivity(Intent(this, BooksActivity::class.java))
+                this.finishAffinity()
+            }
+        }
 
         signupButton = findViewById(R.id.signupText)
         progressBar = findViewById(R.id.progressBar)
@@ -64,8 +76,10 @@ class LoginActivity : AppCompatActivity(){
                             "Login SuccessFul!!",
                             Toast.LENGTH_SHORT,
                         ).show()
-                        startActivity(Intent(this,BooksActivity::class.java))
-                        finish()
+                        var intent = Intent(this,BooksActivity::class.java)
+                        intent.putExtra("email",email)
+                        startActivity(intent)
+                        this.finishAffinity()
 //                        updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.
@@ -80,6 +94,11 @@ class LoginActivity : AppCompatActivity(){
                 }
 
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 
 
